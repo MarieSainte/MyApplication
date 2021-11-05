@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Ma Réu</string>
+    <string name="date">Date</string>
+    <string name="room">Room</string>
+    <string name="reset">Reset</string>
+    <string-array name="Room">
+        <item>Paris</item>
+        <item>London</item>
+        <item>Madrid</item>
+        <item>Rome</item>
+        <item>Berlin</item>
+        <item>Pekin</item>
+        <item>Tokyo</item>
+        <item>Seoul</item>
+        <item>Bangkok</item>
+        <item>Sydney</item>
+    </string-array>
+</resources>

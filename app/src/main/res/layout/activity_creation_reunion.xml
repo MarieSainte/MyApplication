@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.CreationReunion">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineV10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineV90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".90" />
+
+
+    <TextView
+        android:id="@+id/titre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Meeting"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"/>
+
+    <EditText
+        android:id="@+id/sujet"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Sujet"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintTop_toBottomOf="@id/titre" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/purple_500"
+        android:entries="@array/Room"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintTop_toBottomOf="@id/sujet" />
+
+    <Button
+        android:id="@+id/datePickerButton"
+        style="?android:spinnerStyle"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/purple_500"
+        android:onClick="openDatePicker"
+        android:text="Select Date"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintTop_toBottomOf="@id/spinner" />
+
+    <Button
+        android:id="@+id/timePickerButton"
+        style="?android:spinnerStyle"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/purple_500"
+        android:onClick="openTimePicker"
+
+        android:text="Select Time"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintTop_toBottomOf="@id/datePickerButton" />
+
+    <TextView
+        android:id="@+id/participants"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Select Guest"
+        android:padding="15dp"
+        android:drawablePadding="10dp"
+        android:maxHeight="80dp"
+        android:drawableEnd="@android:drawable/arrow_down_float"
+        android:background="@android:drawable/editbox_background"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"
+        app:layout_constraintTop_toBottomOf="@id/timePickerButton"
+        android:layout_marginTop="20dp"
+        android:onClick="PickGuest"
+        />
+
+    <Button
+        android:id="@+id/create"
+        android:layout_width="170dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button_background"
+        android:text="ADD"
+        app:layout_constraintEnd_toEndOf="@id/guidelineV90"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintTop_toBottomOf="@id/participants" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="Name : "
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/sujet"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintBottom_toBottomOf="@id/sujet"
+        android:layout_marginBottom="12dp"
+        />
+
+    <TextView
+        android:id="@+id/room"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="Room : "
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintBottom_toBottomOf="@id/spinner"
+        android:layout_marginBottom="12dp"
+        />
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="Date : "
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/datePickerButton"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintBottom_toBottomOf="@id/datePickerButton"
+        android:layout_marginBottom="12dp"
+        />
+
+    <TextView
+        android:id="@+id/Time"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="Time : "
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/timePickerButton"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintBottom_toBottomOf="@id/timePickerButton"
+        android:layout_marginBottom="12dp"
+        />
+
+    <TextView
+        android:id="@+id/Guest"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="Guest : "
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/participants"
+        app:layout_constraintStart_toStartOf="@id/guidelineV10"
+        app:layout_constraintBottom_toBottomOf="@id/participants"
+        android:layout_marginBottom="15dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
