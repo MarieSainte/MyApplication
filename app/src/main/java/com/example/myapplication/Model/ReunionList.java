@@ -57,17 +57,17 @@ public class ReunionList {
                     && startMeeting.get(Calendar.YEAR) == mainList.get(i).getStartMeeting().get(Calendar.YEAR)){
                 // Check start meeting
                 if(((startMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY)
-                        && startMeeting.get(Calendar.MINUTE) >= mainList.get(i).getStartMeeting().get(Calendar.DATE)) || startMeeting.get(Calendar.HOUR_OF_DAY) > mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY))
+                        && startMeeting.get(Calendar.MINUTE) >= mainList.get(i).getStartMeeting().get(Calendar.MINUTE)) || startMeeting.get(Calendar.HOUR_OF_DAY) > mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY))
                         && ((startMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY)
-                        && startMeeting.get(Calendar.MINUTE) <= mainList.get(i).getEndMeeting().get(Calendar.DATE)) || startMeeting.get(Calendar.HOUR_OF_DAY) < mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY))){
+                        && startMeeting.get(Calendar.MINUTE) <= mainList.get(i).getEndMeeting().get(Calendar.MINUTE)) || startMeeting.get(Calendar.HOUR_OF_DAY) < mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY))){
 
                     return false;
                 }
                 //Check end meeting
                 if(((endMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY)
-                        && endMeeting.get(Calendar.MINUTE) >= mainList.get(i).getStartMeeting().get(Calendar.DATE)) || endMeeting.get(Calendar.HOUR_OF_DAY) > mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY))
+                        && endMeeting.get(Calendar.MINUTE) >= mainList.get(i).getStartMeeting().get(Calendar.MINUTE)) || endMeeting.get(Calendar.HOUR_OF_DAY) > mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY))
                         && ((endMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY)
-                        && endMeeting.get(Calendar.MINUTE) <= mainList.get(i).getEndMeeting().get(Calendar.DATE)) || endMeeting.get(Calendar.HOUR_OF_DAY) < mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY))){
+                        && endMeeting.get(Calendar.MINUTE) <= mainList.get(i).getEndMeeting().get(Calendar.MINUTE)) || endMeeting.get(Calendar.HOUR_OF_DAY) < mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY))){
 
                     return false;
                 }

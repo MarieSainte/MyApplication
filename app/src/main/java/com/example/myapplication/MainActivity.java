@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     MyAdapter myAdapter;
     DatePickerDialog datePickerDialog;
-    String lieu = "";
+    String lieu = "Paris";
     private final Calendar today = Calendar.getInstance();
 
     @Override

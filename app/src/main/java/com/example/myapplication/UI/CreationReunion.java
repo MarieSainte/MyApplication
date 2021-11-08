@@ -22,6 +22,7 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.Model.Reunion;
 import com.example.myapplication.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -55,6 +56,9 @@ public class CreationReunion extends AppCompatActivity {
     private final Calendar endMeeting = Calendar.getInstance();
     private final Calendar today = Calendar.getInstance();
 
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
+
     boolean timeWasSelected , dateWasSelected = false;
 
     @Override
@@ -81,7 +85,7 @@ public class CreationReunion extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-
+            create.setEnabled(sujet.getText().toString().length() > 0 && timeWasSelected && dateWasSelected);
         }
     };
 
@@ -127,7 +131,7 @@ public class CreationReunion extends AppCompatActivity {
             startMeeting.set(Calendar.MONTH, month) ;
             startMeeting.set(Calendar.YEAR, year) ;
 
-            dateButton.setText(day + " " + month + " " + year);
+            dateButton.setText(format.format(startMeeting.getTime()));
         };
 
         int year = today.get(Calendar.YEAR);
@@ -156,7 +160,7 @@ public class CreationReunion extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.create)
     void create(){
-        endMeeting.set(startMeeting.get(Calendar.YEAR),startMeeting.get(Calendar.MONTH),startMeeting.get(Calendar.DATE),startMeeting.get(Calendar.HOUR_OF_DAY),startMeeting.get(Calendar.MINUTE));
+        endMeeting.set(startMeeting.get(Calendar.YEAR),startMeeting.get(Calendar.MONTH),startMeeting.get(Calendar.DATE),startMeeting.get(Calendar.HOUR_OF_DAY),startMeeting.get(Calendar.MINUTE)+45);
         if(Repository.checkRoomAvailability(spinner.getSelectedItem().toString(),startMeeting,endMeeting)){
             Reunion reunion = new Reunion(sujet.getText().toString(),spinner.getSelectedItem().toString(),startMeeting, endMeeting,GuestList);
             Repository.setMainList(reunion);
