@@ -1,12 +1,11 @@
 package com.example.myapplication.Controler;
 
-import android.content.Context;
-
 import com.example.myapplication.Model.ActiveDirectory;
 import com.example.myapplication.Model.Reunion;
 import com.example.myapplication.Model.ReunionList;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Repository {
@@ -32,5 +31,7 @@ public class Repository {
     public static String[] getRooms() { return ActiveDirectory.getRooms(); }
 
     public static  String getStringGuestList(ArrayList<Integer> GuestListIndex) {return Reunion.getStringGuestList(GuestListIndex);}
+
+    public static boolean checkRoomAvailability(String lieu, Calendar startMeeting, Calendar endMeeting){return ReunionList.checkRoomAvailability(lieu,startMeeting,endMeeting);}
 
 }

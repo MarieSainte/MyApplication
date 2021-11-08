@@ -8,6 +8,7 @@ import com.example.myapplication.Controler.Repository;
 import com.example.myapplication.Model.Reunion;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -17,8 +18,8 @@ import java.util.List;
  */
 public class ExampleUnitTest {
 
-
-    Reunion reunion = new Reunion("Sujet", "Paris", 25,11,2021,10,30,"guestList");
+    Calendar startMeeting = Calendar.getInstance();
+    Reunion reunion = new Reunion("Sujet", "Paris", startMeeting,startMeeting,"guestList");
 
     @Test
     public void addition_isCorrect() {
@@ -86,5 +87,7 @@ public class ExampleUnitTest {
         GuestIndexTest.add(0);
         assertTrue(Repository.getStringGuestList(GuestIndexTest).contains("John@gmail.com"));
     }
+
+
 
 }

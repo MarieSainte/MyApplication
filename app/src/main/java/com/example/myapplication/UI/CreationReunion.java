@@ -1,26 +1,21 @@
 package com.example.myapplication.UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.Controler.Repository;
 import com.example.myapplication.MainActivity;
@@ -30,7 +25,6 @@ import com.example.myapplication.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -39,19 +33,29 @@ import butterknife.OnClick;
 
 public class CreationReunion extends AppCompatActivity {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.spinner) Spinner spinner;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.datePickerButton) Button dateButton;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.timePickerButton) Button timeButton;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.create) Button create;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.sujet) EditText sujet;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.participants) TextView participants;
 
-    private DatePickerDialog datePickerDialog;
-    int hour, minute, jour, mois, annee;
     boolean[] selectedGuest;
-    private String GuestList = new String();
-    final String[] GuestArray = Repository.getGuestArray();;
+    private String GuestList = "";
+    final String[] GuestArray = Repository.getGuestArray();
     private ArrayList<Integer> GuestListIndex;
+
+    private final Calendar startMeeting = Calendar.getInstance();
+    private final Calendar endMeeting = Calendar.getInstance();
+    private final Calendar today = Calendar.getInstance();
+
+    boolean timeWasSelected , dateWasSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,144 +77,94 @@ public class CreationReunion extends AppCompatActivity {
         { }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count)
-        {}
+        {create.setEnabled(sujet.getText().toString().length() > 0 && timeWasSelected && dateWasSelected);}
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (sujet.getText().toString().length() > 0 && mois > 0 && hour != 0) {
-                create.setEnabled(true);
-            } else {
-                create.setEnabled(false);
-            }
+
         }
     };
 
     public void PickGuest(View view) {
         selectedGuest = new boolean[GuestArray.length];
-        participants.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        participants.setOnClickListener(view1 -> {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                  CreationReunion.this
-                );
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+              CreationReunion.this
+            );
 
-                builder.setCancelable(false);
+            builder.setCancelable(false);
 
-                builder.setMultiChoiceItems(GuestArray, selectedGuest, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if(b){
-                            GuestListIndex.add(i);
-                            Collections.sort(GuestListIndex);
+            builder.setMultiChoiceItems(GuestArray, selectedGuest, (dialogInterface, i, b) -> {
+                if(b){
+                    GuestListIndex.add(i);
+                    Collections.sort(GuestListIndex);
 
-                        }else{
-                            for(int x=0 ; x < GuestListIndex.size(); x++){
-                                if(GuestListIndex.get(x) == i){
-                                    GuestListIndex.remove(x);
-                                }
-                            }
+                }else{
+                    for(int x=0 ; x < GuestListIndex.size(); x++){
+                        if(GuestListIndex.get(x) == i){
+                            GuestListIndex.remove(x);
                         }
                     }
-                });
+                }
+            });
 
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        GuestList = Repository.getStringGuestList(GuestListIndex);
-                        participants.setText(GuestList);
-                    }
-                });
+            builder.setPositiveButton("Ok", (dialogInterface, i) -> {
+                GuestList = Repository.getStringGuestList(GuestListIndex);
+                participants.setText(GuestList);
+            });
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+            builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
 
-                builder.show();
-            }
+            builder.show();
         });
     }
 
     public void openDatePicker(View view) {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = makeDateString(day,month,year);
-                jour = day ;
-                mois = month ;
-                annee = year ;
-                dateButton.setText(date);
-            }
+        @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            dateWasSelected = true ;
+            startMeeting.set(Calendar.DATE, day) ;
+            startMeeting.set(Calendar.MONTH, month) ;
+            startMeeting.set(Calendar.YEAR, year) ;
+
+            dateButton.setText(day + " " + month + " " + year);
         };
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int year = today.get(Calendar.YEAR);
+        int month = today.get(Calendar.MONTH);
+        int day = today.get(Calendar.DAY_OF_MONTH);
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month,day+1);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day + 1);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
-    private String makeDateString(int day, int month, int year) {
-        return day + " " + getMonthFormat(month) + " " + year;
-    }
-
-    private String getMonthFormat(int month) {
-        if(month == 1)
-            return "JAN";
-        if(month == 2)
-            return "FEB";
-        if(month == 3)
-            return "MAR";
-        if(month == 4)
-            return "APR";
-        if(month == 5)
-            return "MAY";
-        if(month == 6)
-            return "JUN";
-        if(month == 7)
-            return "JUL";
-        if(month == 8)
-            return "AUG";
-        if(month == 9)
-            return "SEP";
-        if(month == 10)
-            return "OCT";
-        if(month == 11)
-            return "NOV";
-        if(month == 12)
-            return "DEC";
-        return "JAN";
-    }
-
     public void openTimePicker(View view) {
-        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                hour = selectedHour;
-                minute = selectedMinute;
-                timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
-            }
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, selectedHour, selectedMinute) -> {
+            startMeeting.set(Calendar.HOUR_OF_DAY, selectedHour) ;
+            startMeeting.set(Calendar.MINUTE, selectedMinute) ;
+            startMeeting.set(Calendar.SECOND, 0) ;
+            timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute));
         };
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,onTimeSetListener,hour,minute,true);
-        timePickerDialog = new TimePickerDialog(this,onTimeSetListener,10,30,true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,onTimeSetListener,10,30,true);
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.create)
     void create(){
-        Reunion reunion = new Reunion(sujet.getText().toString(),spinner.getSelectedItem().toString(),jour,mois,annee,hour,minute,GuestList);
-        Repository.setMainList(reunion);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        endMeeting.set(startMeeting.get(Calendar.YEAR),startMeeting.get(Calendar.MONTH),startMeeting.get(Calendar.DATE),startMeeting.get(Calendar.HOUR_OF_DAY),startMeeting.get(Calendar.MINUTE));
+        if(Repository.checkRoomAvailability(spinner.getSelectedItem().toString(),startMeeting,endMeeting)){
+            Reunion reunion = new Reunion(sujet.getText().toString(),spinner.getSelectedItem().toString(),startMeeting, endMeeting,GuestList);
+            Repository.setMainList(reunion);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "The room is not available at this time, Please select an another room or a different time.", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

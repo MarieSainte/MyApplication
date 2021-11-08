@@ -6,8 +6,8 @@ import java.util.List;
 
 public class ReunionList {
 
-    private static List<Reunion> mainList = new ArrayList<>();
-    private static List<Reunion> filterList = new ArrayList<>(); ;
+    private static final List<Reunion> mainList = new ArrayList<>();
+    private static List<Reunion> filterList = new ArrayList<>();
 
 
     public static List<Reunion> getMainList() {
@@ -43,10 +43,37 @@ public class ReunionList {
     public static void setFilterList(int day, int month, int year) {
         filterList = new ArrayList<>();
         for(int i=0; i < mainList.size(); i++){
-            if(day == mainList.get(i).getDay() && month == mainList.get(i).getMonth() && year == mainList.get(i).getYear()){
+            if(day == mainList.get(i).getStartMeeting().get(Calendar.DATE) && month == mainList.get(i).getStartMeeting().get(Calendar.MONTH) && year == mainList.get(i).getStartMeeting().get(Calendar.YEAR)){
                 filterList.add(mainList.get(i));
             }
         }
+    }
+
+    public static boolean checkRoomAvailability(String lieu,Calendar startMeeting, Calendar endMeeting){
+        for(int i=0; i < mainList.size(); i++){
+            //Check Place and Date
+            if(lieu.equals(mainList.get(i).getLieu()) && startMeeting.get(Calendar.DATE) == mainList.get(i).getStartMeeting().get(Calendar.DATE)
+                    && startMeeting.get(Calendar.MONTH) == mainList.get(i).getStartMeeting().get(Calendar.MONTH)
+                    && startMeeting.get(Calendar.YEAR) == mainList.get(i).getStartMeeting().get(Calendar.YEAR)){
+                // Check start meeting
+                if(((startMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY)
+                        && startMeeting.get(Calendar.MINUTE) >= mainList.get(i).getStartMeeting().get(Calendar.DATE)) || startMeeting.get(Calendar.HOUR_OF_DAY) > mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY))
+                        && ((startMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY)
+                        && startMeeting.get(Calendar.MINUTE) <= mainList.get(i).getEndMeeting().get(Calendar.DATE)) || startMeeting.get(Calendar.HOUR_OF_DAY) < mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY))){
+
+                    return false;
+                }
+                //Check end meeting
+                if(((endMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY)
+                        && endMeeting.get(Calendar.MINUTE) >= mainList.get(i).getStartMeeting().get(Calendar.DATE)) || endMeeting.get(Calendar.HOUR_OF_DAY) > mainList.get(i).getStartMeeting().get(Calendar.HOUR_OF_DAY))
+                        && ((endMeeting.get(Calendar.HOUR_OF_DAY) == mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY)
+                        && endMeeting.get(Calendar.MINUTE) <= mainList.get(i).getEndMeeting().get(Calendar.DATE)) || endMeeting.get(Calendar.HOUR_OF_DAY) < mainList.get(i).getEndMeeting().get(Calendar.HOUR_OF_DAY))){
+
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static void deleteReunion(Reunion reunion){
